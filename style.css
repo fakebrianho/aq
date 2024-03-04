@@ -1,0 +1,111 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: "Kode Mono", monospace;
+}
+
+body{
+    scroll-snap-type: y mandatory;  
+}
+
+canvas{
+    position: fixed;
+    top:0;
+    z-index: -3;
+}
+
+.container{
+    height: 600vh;
+    
+}
+
+.btn1{
+	position: fixed;
+    margin-left: 42vw;
+    margin-top: 92vh;
+    color:white;
+    background: none;
+    border:none;
+}
+
+
+.btn2{
+	position: fixed;
+    margin-left: 48vw;
+    margin-top: 92vh;
+    color:white;
+    background: none;
+    border:none;
+}
+
+.explore{
+	position: fixed;
+    margin-left: 52vw;
+    margin-top: 92vh;
+    color:white;
+    background: none;
+    border:none;
+}
+
+.btn3{
+	position: fixed;
+    margin-left: 60vw;
+    margin-top: 92vh;
+    color:white;
+    background: none;
+    border:none;
+}
+
+.Mayday{
+	position: fixed;
+    margin-left: 87vw;
+    margin-top: 92vh;
+	color:rgb(255, 255, 255);
+	background: none;
+	border: none;
+    /* padding:15px;
+    min-height:30px; 
+    min-width: 160px;
+    background-color: rgb(255, 255, 255);
+    color:rgb(0, 0, 0);
+    border:none;
+    border-radius: 12px; */
+}
+
+.Mayday:hover{
+	background-color: rgb(122, 34, 34);
+	color:black;
+	transition:0.7s;
+}
+
+
+
+/* 弹窗样式 */
+
+.entryPopup{
+    position: fixed;
+    margin-left: 32vw;
+    margin-top: 20vh;
+}
+
+.popup-content {
+    background-color: white;
+    width: 40vw;
+    height: 40vh;
+    margin: 100px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+
+.startButton {
+    background-color: #000000;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
