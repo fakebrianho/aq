@@ -5,9 +5,13 @@ import { addLight,addLight2 } from './addLights'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import Model from './Model'
 import gsap from 'gsap'
+//import { particlesCursor } from 'https://unpkg.com/threejs-toys@0.0.8/build/threejs-toys.module.cdn.min.js'
 
-const renderer = new THREE.WebGLRenderer({ antialias: true })
-//, alpha:true
+
+
+
+const canvas = document.querySelector('canvas.webgl')
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha:true })
 const camera = new THREE.PerspectiveCamera(
 	75,
 	window.innerWidth / window.innerHeight,
@@ -29,7 +33,25 @@ const mixers = []
 const raycaster = new THREE.Raycaster()
 const pointer = new THREE.Vector2()
 
-const container = document.querySelector('.container')
+
+// const pc = particlesCursor({
+// 	el: document.querySelector('canvas.webgl'),
+// 	gpgpuSize: 512,
+// 	colors: [0x00ff00, 0x0000ff],
+// 	color: 0xff0000,
+// 	coordScale: 0.5,
+// 	noiseIntensity: 0.001,
+// 	noiseTimeCoef: 0.0001,
+// 	pointSize: 5,
+// 	pointDecay: 0.0025,
+// 	sleepRadiusX: 250,
+// 	sleepRadiusY: 250,
+// 	sleepTimeCoefX: 0.001,
+// 	sleepTimeCoefY: 0.002
+//   })
+
+
+
 let scrollY = 0
 
 
@@ -61,7 +83,7 @@ function init() {
 	scene.background = new THREE.Color('rgb(255, 255, 255)');
 	
 
-	const entryPopup = document.querySelector('.entryPopup');
+	const popupcontent = document.querySelector('.popupcontent');
 	const startButton = document.querySelector('.startButton');
 	
 	
@@ -86,12 +108,17 @@ function init() {
 
 	// show the popupwindow when loading
 	window.onload,()=>{
-		entryPopup.style.display = 'block'
+		popupcontent.style.display = 'block'
 	}
-	// when click 'enter', close the window
+	// when click 'enter'
 	startButton.addEventListener('click', function() {
 		sound1.play();
-		entryPopup.style.display = 'none'
+		popupcontent.style.display = 'none'
+		gsap.to('#scroll',{
+			opacity: 1,
+			duration:4,
+			ease: 'power3.inOut'
+		})
 	})
 }
 
@@ -119,19 +146,26 @@ function ScrollToChange(){
 				x: 0, 
 				y: 0, 
 				z: 6, 
-				duration: 3, 
+				duration: 4, 
 				ease: 'power3.inOut' 
 			}) 
 
-			//make star model visible
-			// gsap.to(meshes.star,{
-			// 	opacity: 1,
-			// 	duration: 3, 
-			// 	ease: 'power3.inOut' 
-			// })
+			gsap.to('#scroll',{
+				opacity: 0,
+				duration: 2,
+			})
+
+			gsap.to(
+				meshes.star.children[0].children[0].children[1].children[0].material,
+				{
+					opacity:0,
+					duration:4
+				}
+			)
+			
 		}
 
-		if (scrollY > 500 && scrollY < 1000) {
+		if (scrollY > 1000 && scrollY < 1500) {
 			// Turn black + move camera closer
 			gsap.to(scene.background, { 
 				r: 0, 
@@ -144,26 +178,42 @@ function ScrollToChange(){
 				x: 0, 
 				y: 0, 
 				z: 3.5, 
-				duration: 3, 
+				duration: 4, 
 				ease: 'power3.inOut' 
 			})
+
+			gsap.to(
+				meshes.star.children[0].children[0].children[1].children[0].material,
+				{
+					opacity:0,
+					duration:4
+				}
+			)
 		} 
 
-		if (scrollY > 1000 && scrollY < 1500) {
+		if (scrollY > 2000 && scrollY < 2500) {
 			// Move camera closer
 			gsap.to(camera.position, { 
 				x: 0,
 				y: -4,
 				z: 1,
-				duration: 6.5,
+				duration: 4,
 				ease: 'power3.inOut' 
 			})
 
+			gsap.to(
+				meshes.star.children[0].children[0].children[1].children[0].material,
+				{
+					opacity:1,
+					duration:4
+				}
+			)
+			
 			gsap.to(meshes.star.position, {
 				x: 0,
 				y: 0,
 				z: -20,
-				duration: 10,
+				duration: 4,
 				ease: 'power3.inOut',
 			})
 
@@ -171,7 +221,7 @@ function ScrollToChange(){
 				x: -2.5,
 				y: 0,
 				z: 2,
-				duration: 15,
+				duration: 4,
 				ease: 'power3.inOut',
 			})
 
@@ -179,12 +229,12 @@ function ScrollToChange(){
 				x: -2.5,
 				y: -2,
 				z: 0,
-				duration: 15,
+				duration: 4,
 				ease: 'power3.inOut',
 			})
 		}
 
-		if (scrollY > 1500 ) {
+		if (scrollY > 3000 && scrollY < 3500) {
 			// Move camera closer
 			gsap.to(camera.position, {
 				x: 0.3,
@@ -211,6 +261,16 @@ function ScrollToChange(){
 				x: 0,
 				y: 0,
 				z: 0,
+				duration: 6,
+				ease: 'power3.inOut',
+			})
+		}
+
+		if(scrollY>4000){
+			gsap.to(camera.position, {
+				x: 0,
+				y: -3,
+				z: 6,
 				duration: 6,
 				ease: 'power3.inOut',
 			})
@@ -245,19 +305,6 @@ function instances() {
 		
 	})
 	blackhole.init()
-	
-
-	// const rolex = new Model({
-	// 	url: './rolex.glb',
-	// 	scene: scene,
-	// 	meshes: meshes,
-	// 	name: 'rolex',
-	// 	mixers: mixers,
-	// 	animationState: true,
-	// 	position: new THREE.Vector3(-2.5, 0, 2),
-	// 	scale: new THREE.Vector3(10.0, 10.0, 10.0),
-	// })
-	// rolex.init()
 
 	const chair = new Model({
 		url: './chair.glb',
@@ -269,7 +316,6 @@ function instances() {
 		position: new THREE.Vector3(-2.5, 0, 2),
 		scale: new THREE.Vector3(0.1, 0.1, 0.1),
 	})
-	
 	chair.init()
 
 	const chair2 = new Model({
@@ -282,7 +328,6 @@ function instances() {
 		position: new THREE.Vector3(-2.5, -2, 0),
 		scale: new THREE.Vector3(1, 1, 1),
 	})
-	
 	chair2.init()
 
 	const star = new Model({
@@ -298,9 +343,68 @@ function instances() {
 	})
 	star.init()
 
-	//meshes.star.material.opacity = 0
-	console.log(meshes.star)
 
+	window.addEventListener('click',()=>{
+		console.log(meshes.star.children[0].children[0].children[1].children[0])
+		gsap.to(
+			meshes.star.children[0].children[0].children[1].children[0].material,
+			{
+				opacity:0,
+				duration:2
+			}
+		)
+	})
+
+	const photo = new Model({
+		url: './photo.glb',
+		scene: scene,
+		meshes: meshes,
+		name: 'photo',
+		mixers: mixers,
+		animationState: false,
+		position: new THREE.Vector3(0, 0, 0),
+		rotation: new THREE.Vector3(0, 0, 0),
+		scale: new THREE.Vector3(0.001, 0.001, 0.001),
+	})
+	photo.init()
+
+	const guitar = new Model({
+		url: './guitar.glb',
+		scene: scene,
+		meshes: meshes,
+		name: 'guitar',
+		mixers: mixers,
+		animationState: false,
+		position: new THREE.Vector3(0, 0, 0),
+		rotation: new THREE.Vector3(0, 0, 0),
+		scale: new THREE.Vector3(0.02, 0.02, 0.02),
+	})
+	guitar.init()
+
+	const horse = new Model({
+		url: './horse.glb',
+		scene: scene,
+		meshes: meshes,
+		name: 'horse',
+		mixers: mixers,
+		animationState: false,
+		position: new THREE.Vector3(0, 0, 1),
+		rotation: new THREE.Vector3(0, 0, 0),
+		scale: new THREE.Vector3(0.08, 0.08, 0.08),
+	})
+	horse.init()
+
+	const bag = new Model({
+		url: './bag.glb',
+		scene: scene,
+		meshes: meshes,
+		name: 'bag',
+		mixers: mixers,
+		animationState: false,
+		position: new THREE.Vector3(-2.5, 0, 2),
+		scale: new THREE.Vector3(0.5, 0.5, 0.5),
+	})
+	bag.init()
 }
 
 function raycast(){
@@ -451,10 +555,6 @@ function animate() {
 	// meshes.standard.rotation.z -= 0.01
 
 	//ensuring that the rotation code is executed only if meshes.rolex is defined.
-	if(meshes.rolex){
-		meshes.rolex.rotation.x += 0.01
-		meshes.rolex.rotation.z += 0.01
-	}
 
 	if(meshes.chair){
 		const tick = clock.getElapsedTime()
@@ -468,14 +568,47 @@ function animate() {
 		const tick = clock.getElapsedTime()
 		meshes.chair2.rotation.y += 0.005
 		meshes.chair2.rotation.z += 0.005
-		meshes.chair2.position.x = Math.sin(tick*-0.1)* 2
-    	meshes.chair2.position.y = Math.cos(tick*-0.1)* 2 //Math.cos(tick * velocity)* radius
+		meshes.chair2.position.x = Math.sin(tick*-0.1)* 2.2
+    	meshes.chair2.position.y = Math.cos(tick*-0.1)* 2.2 //Math.cos(tick * velocity)* radius
 	}
 
 	if(meshes.star){
 		meshes.star.rotation.z += 0.002
 	}
 
+	if(meshes.photo){
+		const tick = clock.getElapsedTime()
+		meshes.photo.rotation.y += 0.005
+		meshes.photo.rotation.z += 0.005
+		meshes.photo.position.x = Math.sin(tick*-0.1)* 1.5
+    	meshes.photo.position.z = Math.sin(tick*-0.1)* 1.5
+		meshes.photo.position.y = Math.sin(tick* 0.1)* 1.5 //Math.cos(tick * velocity)* radius
+	}
+
+	if(meshes.guitar){
+		const tick = clock.getElapsedTime()
+		meshes.guitar.rotation.y += 0.005
+		meshes.guitar.rotation.z += 0.005
+		meshes.guitar.position.x = Math.sin(tick* 0.1)* 2
+		meshes.guitar.position.z = Math.sin(tick* -0.15)* 2  
+    	meshes.guitar.position.y = Math.sin(tick* -0.15)* 2  //Math.cos(tick * velocity)* radius
+	}
+
+	if(meshes.horse){
+		const tick = clock.getElapsedTime()
+		meshes.horse.rotation.y += 0.005
+		meshes.horse.rotation.z += 0.005
+		meshes.horse.position.x = Math.cos(tick* 0.1)* 1.5
+    	meshes.horse.position.y = Math.cos(tick* 0.1)* 2  //Math.cos(tick * velocity)* radius
+	}
+	
+	if(meshes.bag){
+		const tick = clock.getElapsedTime()
+		meshes.bag.rotation.y -= 0.005
+		meshes.bag.rotation.z -= 0.005
+		meshes.bag.position.x = Math.sin(tick*0.1)* 2
+    	meshes.bag.position.y = Math.cos(tick*0.1)* 2 //Math.cos(tick * velocity)* radius
+	}
 	
 
 	renderer.render(scene, camera)

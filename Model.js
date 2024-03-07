@@ -37,6 +37,7 @@ export default class Model {
 			: this.textureLoader.load('/10.png')
 		this.scale = obj.scale || new Vector3(1, 1, 1)
 		this.position = obj.position || new Vector3(0, 0, 0)
+		this.seeThrough = obj.opacity
 	}
 	init() {
 		this.loader.load(this.file, (gltf) => {
@@ -51,6 +52,17 @@ export default class Model {
 					}
 				})
 			}
+
+			if (this.seeThrough) {
+				gltf.scene.traverse((child)=>{
+					if(child.isMesh){
+						child.material.transparent = true
+						child.material.opacity = 0
+					}
+				})
+			}
+
+
 			if (this.animations) {
 				this.mixer = new AnimationMixer(gltf.scene)
 				gltf.animations.forEach((clip) => {
