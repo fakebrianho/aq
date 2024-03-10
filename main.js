@@ -5,6 +5,7 @@ import { addLight,addLight2 } from './addLights'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import Model from './Model'
 import gsap from 'gsap'
+import { WheelAdaptor } from 'three-story-controls'
 //import { particlesCursor } from 'https://unpkg.com/threejs-toys@0.0.8/build/threejs-toys.module.cdn.min.js'
 
 
@@ -34,24 +35,6 @@ const raycaster = new THREE.Raycaster()
 const pointer = new THREE.Vector2()
 
 
-// const pc = particlesCursor({
-// 	el: document.querySelector('canvas.webgl'),
-// 	gpgpuSize: 512,
-// 	colors: [0x00ff00, 0x0000ff],
-// 	color: 0xff0000,
-// 	coordScale: 0.5,
-// 	noiseIntensity: 0.001,
-// 	noiseTimeCoef: 0.0001,
-// 	pointSize: 5,
-// 	pointDecay: 0.0025,
-// 	sleepRadiusX: 250,
-// 	sleepRadiusY: 250,
-// 	sleepTimeCoefX: 0.001,
-// 	sleepTimeCoefY: 0.002
-//   })
-
-
-
 let scrollY = 0
 
 
@@ -64,7 +47,6 @@ const audioLoader = new THREE.AudioLoader()
 
 init()
 function init() {
-	//set up our renderer default settings, add scene/canvas to webpage
 	renderer.setSize(window.innerWidth, window.innerHeight)
 	document.body.appendChild(renderer.domElement)
 
@@ -80,7 +62,7 @@ function init() {
 	//scene.add(meshes.standard)
 	//scene.add(meshes.default)
 
-	scene.background = new THREE.Color('rgb(255, 255, 255)');
+	//scene.background = new THREE.Color('rgb(255, 255, 255)');
 	
 
 	const popupcontent = document.querySelector('.popupcontent');
@@ -91,16 +73,15 @@ function init() {
 	window.addEventListener('scroll',ScrollToChange)
 
 
-
 	camera.position.set(0, 0, 5)
 	instances()
 	initAudio()
 	raycast()
-	button1()
-	button2()
-	button3()
-	explore()
-	end()
+	// button1()
+	// button2()
+	// button3()
+	// explore()
+	// end()
 	resize()
 	animate()
 
@@ -116,32 +97,396 @@ function init() {
 		popupcontent.style.display = 'none'
 		gsap.to('#scroll',{
 			opacity: 1,
-			duration:4,
+			duration: 3,
 			ease: 'power3.inOut'
 		})
 	})
+
+	// const wheelAdaptor = new WheelAdaptor({ type: 'discrete' })
+	// const description = document.querySelector('.captionText')
+	// let count = 0
+	// wheelAdaptor.connect()
+	// wheelAdaptor.addEventListener('trigger', (event) => {
+	// 	if (count === 0){
+	// 		gsap.to('#scroll',{
+	// 			opacity: 0,
+	// 			duration: 2,
+	// 		})
+	// 		gsap.to('#scroll2',{
+	// 			opacity: 0,
+	// 			duration:3,
+	// 			ease: 'power3.inOut'
+	// 		})
+	// 	} else if (count === 1){
+	// 		gsap.to('#scroll2',{
+	// 			opacity: 1,
+	// 			duration:3,
+	// 			ease: 'power3.inOut'
+	// 		})
+	// 		gsap.to('#scroll3',{
+	// 			opacity: 0,
+	// 			duration:3,
+	// 			ease: 'power3.inOut'
+	// 		})
+	// 	} else if (count === 2) {
+	// 		gsap.to('#scroll2',{
+	// 			opacity: 0,
+	// 			duration:3,
+	// 			ease: 'power3.inOut'
+	// 		})
+	// 		gsap.to('#scroll3',{
+	// 			opacity: 1,
+	// 			duration:3,
+	// 			ease: 'power3.inOut'
+	// 		})
+	// 		gsap.to('#scroll4',{
+	// 			opacity: 0,
+	// 			duration:3,
+	// 			ease: 'power3.inOut'
+	// 		})
+	// 	}else if (count === 3){
+	// 		gsap.to('#scroll3',{
+	// 			opacity: 0,
+	// 			duration:3,
+	// 			ease: 'power3.inOut'
+	// 		})
+	// 		gsap.to('#scroll4',{
+	// 			opacity: 1,
+	// 			duration:3,
+	// 			ease: 'power3.inOut'
+	// 		})
+	// 		gsap.to('#scroll5',{
+	// 			opacity: 0,
+	// 			duration:3,
+	// 			ease: 'power3.inOut'
+	// 		})
+	// 	}
+	// 	count++
+	// })
+
 }
 
 function ScrollToChange(){
 		scrollY = window.scrollY
 		console.log(scrollY)
-		// const section = Math.round(scrollY/window.innerHeight)
-		// console.log(section)
 
 		if (sound1.isPlaying === false) {
 			sound1.play();
 		}
 		
-		if (scrollY > 0 && scrollY < 500) {
-		  // Turn white
-			gsap.to(scene.background, { 
-				r: 1, 
-				g: 1, 
-				b: 1, 
-				duration: 4 
+//Texts
+//Beginning
+		if(scrollY < 390){
+			gsap.to('#scroll',{
+				opacity: 0,
+				duration: 1,
 			})
-			// change back ground to light
+			//here
+			gsap.to('#scroll2',{
+				opacity: 0,
+				duration: 1,
+			})
+			gsap.to('body',{
+				duration:3,
+				backgroundColor:'rgb(255,255,255)'
+			})
+		}
 
+//old photos
+		if (scrollY > 390 && scrollY < 1600){
+			gsap.to('#scroll2',{
+				opacity: 1,
+				duration:1,
+			})
+			gsap.to(meshes.photo.scale, {
+				x: 0.002,
+				y: 0.002,
+				z: 0.002,
+				duration: 4,
+				ease: 'power3.inOut',
+			})
+			gsap.to('#scroll3',{
+				opacity: 0,
+				duration:1,
+			})
+			gsap.to('body',{
+				duration:1,
+				backgroundColor:'rgb(71, 58, 36)'
+			})
+		}
+
+		if(scrollY >1600 && scrollY < 2200){
+			gsap.to('#scroll2',{
+				opacity: 0,
+				duration:1,
+			})
+			gsap.to('body',{
+				duration:1,
+				backgroundColor:'rgb(94,96,56)'
+			})
+		}
+//park
+		if (scrollY > 2200 && scrollY < 2800){
+			
+			gsap.to('#scroll3',{
+				opacity: 1,
+				duration:1,
+			})
+			gsap.to(meshes.flower.scale, {
+				x: 1,
+				y: 1,
+				z: 1,
+				duration: 4,
+				ease: 'power3.inOut',
+			})
+			gsap.to('#scroll4',{
+				opacity: 0,
+				duration:1,
+			})
+		}
+
+		if (scrollY > 2800 && scrollY < 3400){
+			gsap.to('#scroll3',{
+				opacity: 0,
+				duration:1,
+			})
+			gsap.to('body',{
+				duration:1,
+				backgroundColor:'rgb(199, 197, 217)'
+			})
+		}
+//expensive things
+		if (scrollY > 3400 && scrollY < 4000){
+			
+			gsap.to('#scroll4',{
+				opacity: 1,
+				duration:1,
+			})
+			gsap.to(meshes.watch.scale, {
+				x: 0.15,
+				y: 0.15,
+				z: 0.15,
+				duration: 4,
+				ease: 'power3.inOut',
+			})
+			gsap.to('#scroll5',{
+				opacity: 0,
+				duration:1,
+			})
+		}
+
+		if (scrollY > 4000 && scrollY < 4600){
+			gsap.to('#scroll4',{
+					opacity: 0,
+					duration:1,	
+			})
+			gsap.to('body',{
+				duration:3,
+				backgroundColor:'rgb(163,53,65)'
+			})
+		}
+//lineage
+		if (scrollY > 4600 && scrollY < 5200){
+			gsap.to('#scroll5',{
+				opacity: 1,
+				duration:1,
+				ease: 'power3.inOut'
+			})
+			gsap.to(meshes.bag.scale, {
+				x: 0.6,
+				y: 0.6,
+				z: 0.6,
+				duration: 4,
+				ease: 'power3.inOut',
+			})
+			gsap.to('#scroll6',{
+				opacity: 0,
+				duration:1,
+				ease: 'power3.inOut'
+			})
+			
+		}
+
+		if (scrollY > 5200 && scrollY < 5800){
+			gsap.to('#scroll5',{
+				opacity: 0,
+				duration:1,
+				ease: 'power3.inOut'
+			})
+			gsap.to('body',{
+				duration:3,
+				backgroundColor:'rgb(217, 102, 213)'
+			})
+		}
+//wish,hope
+		if (scrollY > 5800 && scrollY < 6400){
+			gsap.to('#scroll6',{
+				opacity: 1,
+				duration:1,
+			})
+			gsap.to(meshes.guitar.scale, {
+				x: 0.02,
+				y: 0.02,
+				z: 0.02,
+				duration: 4,
+				ease: 'power3.inOut',
+			})
+			gsap.to('#scroll7',{
+				opacity: 0,
+				duration:1,
+			})
+		}
+
+		if (scrollY > 6400 && scrollY < 7000){
+			gsap.to('#scroll6',{
+				opacity: 0,
+				duration:1,
+			})
+			gsap.to('body',{
+				duration:3,
+				backgroundColor:'rgb(59, 26, 58)'
+			})
+			
+		}
+
+//question
+		if (scrollY > 7000 && scrollY < 7600){
+			gsap.to('#scroll7',{
+				opacity: 1,
+				duration:1,
+			})
+			gsap.to('#scroll8',{
+				opacity: 0,
+				duration:1,
+			})
+		}
+
+		if (scrollY > 7600 && scrollY < 8200){
+			gsap.to('#scroll7',{
+				opacity: 0,
+				duration:1,
+			})
+			gsap.to('body',{
+				duration:3,
+				backgroundColor:'rgb(0,0,0)'
+			})
+		}
+//last question
+		if (scrollY > 8200 && scrollY < 8800){
+			gsap.to('#scroll8',{
+				opacity: 1,
+				duration:1,
+			})
+			gsap.to('#scroll9',{
+				opacity: 0,
+				duration:1,
+			})
+		}
+		if (scrollY > 8800 && scrollY < 9400){
+			gsap.to('#scroll8',{
+				opacity: 0,
+				duration:1,
+			})
+		}
+//finally
+		if (scrollY > 9400 && scrollY < 10000){
+			gsap.to('#scroll9',{
+				opacity: 1,
+				duration:1,
+			})
+			gsap.to('#scroll10',{
+				opacity: 0,
+				duration:1,
+			})
+		}
+		if (scrollY > 10000 && scrollY < 10600){
+			gsap.to('#scroll9',{
+				opacity: 0,
+				duration:1,
+			})
+		}
+	//
+		if (scrollY > 10600 && scrollY < 11200){
+			gsap.to('#scroll10',{
+				opacity: 1,
+				duration:1,
+			})
+			gsap.to('#scroll11',{
+				opacity: 0,
+				duration:1,
+			})
+		}
+		if (scrollY > 11200 && scrollY < 11800){
+			gsap.to('#scroll10',{
+				opacity: 0,
+				duration:1,
+			})
+		}
+	//
+		if (scrollY > 11800 && scrollY < 12400){
+			gsap.to('#scroll11',{
+				opacity: 1,
+				duration:1,
+			})
+			gsap.to('#scroll12',{
+				opacity: 0,
+				duration:1,
+			})
+		}
+		if (scrollY > 12400 && scrollY < 13000){
+			gsap.to('#scroll11',{
+				opacity: 0,
+				duration:1,
+			})
+		}
+
+		if (scrollY > 13000 && scrollY < 14500){
+			gsap.to('#scroll12',{
+				opacity: 1,
+				duration:3,
+			})
+		}
+		if (scrollY > 14500 && scrollY < 14700){
+			gsap.to('#scroll12',{
+				opacity: 1,
+				duration:3,
+			})
+		}
+		if (scrollY > 14700 && scrollY < 15000){
+			gsap.to('#scroll12',{
+				opacity: 0,
+				duration:3,
+			})
+			gsap.to('body',{
+				duration:3,
+				backgroundColor:'rgb(255,255,255)'
+			})
+			gsap.to(
+				meshes.star.children[0].children[0].children[1].children[0].material,
+				{
+					opacity:0,
+					duration:4
+				}
+			)
+			
+		}
+		if (scrollY > 15000 && scrollY < 15600)
+			gsap.to('#Mayday',{
+				opacity: 0,
+				duration:3,
+		})
+
+		if (scrollY > 15600){
+			gsap.to('#Mayday',{
+				opacity: 1,
+				duration:3,
+			})
+		}
+
+
+//////////////////////////////////////////////////////
+
+		if (scrollY > 0 && scrollY < 1000) {
 			gsap.to(camera.position, { 
 				x: 0, 
 				y: 0, 
@@ -149,93 +494,40 @@ function ScrollToChange(){
 				duration: 4, 
 				ease: 'power3.inOut' 
 			}) 
-
-			gsap.to('#scroll',{
-				opacity: 0,
-				duration: 2,
-			})
-
 			gsap.to(
 				meshes.star.children[0].children[0].children[1].children[0].material,
 				{
 					opacity:0,
 					duration:4
 				}
-			)
-			
+			)	
 		}
 
-		if (scrollY > 1000 && scrollY < 1500) {
-			// Turn black + move camera closer
-			gsap.to(scene.background, { 
-				r: 0, 
-				g: 0, 
-				b: 0, 
-				duration: 4 
-			})// change background to dark
-  
-			gsap.to(camera.position, { 
-				x: 0, 
-				y: 0, 
-				z: 3.5, 
-				duration: 4, 
-				ease: 'power3.inOut' 
-			})
-
-			gsap.to(
-				meshes.star.children[0].children[0].children[1].children[0].material,
-				{
-					opacity:0,
-					duration:4
-				}
-			)
-		} 
-
-		if (scrollY > 2000 && scrollY < 2500) {
-			// Move camera closer
+		if (scrollY > 6400 && scrollY < 7600) {
+			// Move camera closer, let star opacity = 1
 			gsap.to(camera.position, { 
 				x: 0,
 				y: -4,
 				z: 1,
 				duration: 4,
 				ease: 'power3.inOut' 
-			})
+			}) 
 
-			gsap.to(
-				meshes.star.children[0].children[0].children[1].children[0].material,
-				{
-					opacity:1,
-					duration:4
-				}
-			)
-			
-			gsap.to(meshes.star.position, {
-				x: 0,
-				y: 0,
-				z: -20,
-				duration: 4,
-				ease: 'power3.inOut',
-			})
-
-			gsap.to(meshes.chair.position, {
-				x: -2.5,
-				y: 0,
-				z: 2,
-				duration: 4,
-				ease: 'power3.inOut',
-			})
-
-			gsap.to(meshes.chair2.position, {
-				x: -2.5,
-				y: -2,
-				z: 0,
-				duration: 4,
-				ease: 'power3.inOut',
-			})
 		}
 
-		if (scrollY > 3000 && scrollY < 3500) {
-			// Move camera closer
+		//move camera
+		if (scrollY > 7600 && scrollY < 10600) {
+			gsap.to(camera.position, {
+				x: 0.3,
+				y: -4,
+				z: 1,
+				duration: 6,
+				ease: 'power3.inOut',
+			})
+			
+		}
+		//make stars visible, move camer closer
+		if (scrollY > 10600 && scrollY < 11800){
 			gsap.to(camera.position, {
 				x: 0.3,
 				y: -3,
@@ -243,17 +535,77 @@ function ScrollToChange(){
 				duration: 6,
 				ease: 'power3.inOut',
 			})
-			gsap.to(meshes.chair.position, {
+			gsap.to(
+				meshes.star.children[0].children[0].children[1].children[0].material,
+				{
+					opacity:1,
+					duration:4
+				}
+			)
+			gsap.to(meshes.star.position, {
 				x: 0,
 				y: 0,
-				z: 7,
+				z: -20,
+				duration: 4,
+				ease: 'power3.inOut',
+			})
+			if (scrollY > 9400){
+				gsap.to(camera.position, {
+					x: 0.3,
+					y: -2,
+					z: 1,
+					duration: 6,
+					ease: 'power3.inOut',
+				})
+			}
+		}
+
+
+// Move other things away
+		if (scrollY > 11800 && scrollY < 12000) {
+			gsap.to(meshes.bag.scale, {
+				x: 0,
+				y: 0,
+				z: 10,
 				duration: 6,
 				ease: 'power3.inOut',
 			})
-			gsap.to(meshes.chair2.position, {
+			gsap.to(meshes.watch.scale, {
 				x: 0,
 				y: 0,
-				z: 7,
+				z: 10,
+				duration: 6,
+				ease: 'power3.inOut',
+			})
+			gsap.to(meshes.flower.scale, {
+				x: 0,
+				y: 0,
+				z: 10,
+				duration: 6,
+				ease: 'power3.inOut',
+			})
+			gsap.to(meshes.photo.scale, {
+				x: 0,
+				y: 0,
+				z: 10,
+				duration: 6,
+				ease: 'power3.inOut',
+			})
+			gsap.to(meshes.guitar.scale, {
+				x: 0,
+				y: 0,
+				z: 10,
+				duration: 6,
+				ease: 'power3.inOut',
+			})
+		
+		}
+//show stars
+		if(scrollY>12000 && scrollY <12500){
+			gsap.to(camera.position, {
+				x: 0.3,
+				y: -4,
+				z: 1,
 				duration: 6,
 				ease: 'power3.inOut',
 			})
@@ -264,22 +616,20 @@ function ScrollToChange(){
 				duration: 6,
 				ease: 'power3.inOut',
 			})
+			
 		}
 
-		if(scrollY>4000){
+		if(scrollY>12500){
 			gsap.to(camera.position, {
 				x: 0,
 				y: -3,
-				z: 6,
+				z: 5,
 				duration: 6,
 				ease: 'power3.inOut',
 			})
 		}
-
-
-
-		
 }
+
 
 function initAudio(){
 	audioLoader.load('/Mayday.flac', function (buffer) {
@@ -306,29 +656,18 @@ function instances() {
 	})
 	blackhole.init()
 
-	const chair = new Model({
-		url: './chair.glb',
+	
+	const watch = new Model({
+		url: './watch.glb',
 		scene: scene,
 		meshes: meshes,
-		name: 'chair',
-		mixers: mixers,
-		animationState: true,
-		position: new THREE.Vector3(-2.5, 0, 2),
-		scale: new THREE.Vector3(0.1, 0.1, 0.1),
-	})
-	chair.init()
-
-	const chair2 = new Model({
-		url: './chair.gltf',
-		scene: scene,
-		meshes: meshes,
-		name: 'chair2',
+		name: 'watch',
 		mixers: mixers,
 		animationState: true,
 		position: new THREE.Vector3(-2.5, -2, 0),
-		scale: new THREE.Vector3(1, 1, 1),
+		scale: new THREE.Vector3(0.5, 0.5, 0.5),
 	})
-	chair2.init()
+	watch.init()
 
 	const star = new Model({
 		url: './randomness.glb',
@@ -364,7 +703,7 @@ function instances() {
 		animationState: false,
 		position: new THREE.Vector3(0, 0, 0),
 		rotation: new THREE.Vector3(0, 0, 0),
-		scale: new THREE.Vector3(0.001, 0.001, 0.001),
+		scale: new THREE.Vector3(0.004, 0.004, 0.004),
 	})
 	photo.init()
 
@@ -377,22 +716,22 @@ function instances() {
 		animationState: false,
 		position: new THREE.Vector3(0, 0, 0),
 		rotation: new THREE.Vector3(0, 0, 0),
-		scale: new THREE.Vector3(0.02, 0.02, 0.02),
+		scale: new THREE.Vector3(0.1, 0.1, 0.1),
 	})
 	guitar.init()
 
-	const horse = new Model({
-		url: './horse.glb',
+	const flower = new Model({
+		url: './flower.glb',
 		scene: scene,
 		meshes: meshes,
-		name: 'horse',
+		name: 'flower',
 		mixers: mixers,
 		animationState: false,
 		position: new THREE.Vector3(0, 0, 1),
 		rotation: new THREE.Vector3(0, 0, 0),
-		scale: new THREE.Vector3(0.08, 0.08, 0.08),
+		scale: new THREE.Vector3(2.5, 2.5, 2.5),
 	})
-	horse.init()
+	flower.init()
 
 	const bag = new Model({
 		url: './bag.glb',
@@ -402,7 +741,7 @@ function instances() {
 		mixers: mixers,
 		animationState: false,
 		position: new THREE.Vector3(-2.5, 0, 2),
-		scale: new THREE.Vector3(0.5, 0.5, 0.5),
+		scale: new THREE.Vector3(2, 2, 2),
 	})
 	bag.init()
 }
@@ -415,23 +754,6 @@ function raycast(){
 		const intersects = raycaster.intersectObjects(scene.children)
 		console.log(intersects)
 		for (let i = 0; i < intersects.length; i++) {
-			//woodchair- camera position inside
-			if (intersects[i].object.userData.name == 'Object_3') {
-				// gsap.to(intersects[i].object.scale, {
-				// 	x: 20,
-				// 	y: 20,
-				// 	z: 20,
-				// 	duration: 2,
-				// 	ease: 'power3.inOut',
-				// })
-				gsap.to(camera.position, {
-					x: 0,
-					y: 0,
-					z: 5,
-					duration: 3,
-					ease: 'power3.inOut',
-				})
-			}
 			//leather chair
 			if (intersects[i].object.userData.name == 'koltuk') {
 				gsap.to(camera.position, {
@@ -447,91 +769,91 @@ function raycast(){
 }
 
 //button interaction (to be replaced)
-function button3(){
-	let button = document.querySelector('.btn3')
-	button.addEventListener('click', (event) => {
-		gsap.to(camera.position, {
-			x: 0.3,
-			y: -3,
-			z: 1,
-			duration: 6,
-			ease: 'power3.inOut',
-		})
-		gsap.to(meshes.chair.position, {
-			x: 0,
-			y: 0,
-			z: 7,
-			duration: 15,
-			ease: 'power3.inOut',
-		})
-		gsap.to(meshes.chair2.position, {
-			x: 0,
-			y: 0,
-			z: 7,
-			duration: 15,
-			ease: 'power3.inOut',
-		})
-		gsap.to(meshes.star.position, {
-			x: 0,
-			y: 0,
-			z: 0,
-			duration: 10,
-			ease: 'power3.inOut',
-		})
-	})
-}
+// function button3(){
+// 	let button = document.querySelector('.btn3')
+// 	button.addEventListener('click', (event) => {
+// 		gsap.to(camera.position, {
+// 			x: 0.3,
+// 			y: -3,
+// 			z: 1,
+// 			duration: 6,
+// 			ease: 'power3.inOut',
+// 		})
+// 		gsap.to(meshes.flower.position, {
+// 			x: 0,
+// 			y: 0,
+// 			z: 7,
+// 			duration: 15,
+// 			ease: 'power3.inOut',
+// 		})
+// 		gsap.to(meshes.watch.position, {
+// 			x: 0,
+// 			y: 0,
+// 			z: 7,
+// 			duration: 15,
+// 			ease: 'power3.inOut',
+// 		})
+// 		gsap.to(meshes.star.position, {
+// 			x: 0,
+// 			y: 0,
+// 			z: 0,
+// 			duration: 10,
+// 			ease: 'power3.inOut',
+// 		})
+// 	})
+// }
 
-function button1(){
-	let button = document.querySelector('.btn1')
-	button.addEventListener('click', (event) => {
-		gsap.to(camera.position, {
-			x: 0,
-			y: 0,
-			z: 3.5,
-			duration: 5,
-			ease: 'power3.inOut',
-		})
-	})
-}
+// function button1(){
+// 	let button = document.querySelector('.btn1')
+// 	button.addEventListener('click', (event) => {
+// 		gsap.to(camera.position, {
+// 			x: 0,
+// 			y: 0,
+// 			z: 3.5,
+// 			duration: 5,
+// 			ease: 'power3.inOut',
+// 		})
+// 	})
+// }
 
-function button2(){
-	let button = document.querySelector('.btn2')
-	button.addEventListener('click', (event) => {
-		gsap.to(camera.position, {
-			x: 0,
-			y: 0,
-			z: 6,
-			duration: 7.5,
-			ease: 'power3.inOut',
-		})
-	})
-}
+// function button2(){
+// 	let button = document.querySelector('.btn2')
+// 	button.addEventListener('click', (event) => {
+// 		gsap.to(camera.position, {
+// 			x: 0,
+// 			y: 0,
+// 			z: 6,
+// 			duration: 7.5,
+// 			ease: 'power3.inOut',
+// 		})
+// 	})
+// }
 
-function explore(){
-	let button = document.querySelector('.explore')
-	button.addEventListener('click', (event) => {
-		gsap.to(camera.position, {
-			x: 0,
-			y: -4,
-			z: 1,
-			duration: 6.5,
-			ease: 'power3.inOut',
-		})
-	})
-}
+// function explore(){
+// 	let button = document.querySelector('.explore')
+// 	button.addEventListener('click', (event) => {
+// 		gsap.to(camera.position, {
+// 			x: 0,
+// 			y: -4,
+// 			z: 1,
+// 			duration: 6.5,
+// 			ease: 'power3.inOut',
+// 		})
+// 	})
+// }
 
-function end(){
-	let button = document.querySelector('.Mayday')
-	button.addEventListener('click', (event) => {
-		gsap.to(camera.position, {
-			x: 0,
-			y: -5.5,
-			z: 5,
-			duration: 6.5,
-			ease: 'power3.inOut',
-		})
-	})
-}
+// function end(){
+// 	let button = document.querySelector('.Mayday')
+// 	button.addEventListener('click', (event) => {
+// 		gsap.to(camera.position, {
+// 			x: 0,
+// 			y: -5.5,
+// 			z: 5,
+// 			duration: 6.5,
+// 			ease: 'power3.inOut',
+// 		})
+// 	})
+// }
 
 function resize() {
 	window.addEventListener('resize', () => {
@@ -543,33 +865,19 @@ function resize() {
 
 function animate() {
 	requestAnimationFrame(animate)
-	
 	const delta = clock.getDelta()
 	controls.update()
 	for (const mixer of mixers) {
 		mixer.update(delta)
 	}
-	// meshes.default.rotation.x += 0.01
-	// meshes.default.rotation.y -= 0.01
-	// meshes.standard.rotation.x -= 0.01
-	// meshes.standard.rotation.z -= 0.01
 
-	//ensuring that the rotation code is executed only if meshes.rolex is defined.
-
-	if(meshes.chair){
+	if(meshes.watch){
 		const tick = clock.getElapsedTime()
-		meshes.chair.rotation.y -= 0.005
-		meshes.chair.rotation.z -= 0.005
-		meshes.chair.position.x = Math.sin(tick*0.1)* 2
-    	meshes.chair.position.y = Math.cos(tick*0.1)* 2 //Math.cos(tick * velocity)* radius
-	}
-
-	if(meshes.chair2){
-		const tick = clock.getElapsedTime()
-		meshes.chair2.rotation.y += 0.005
-		meshes.chair2.rotation.z += 0.005
-		meshes.chair2.position.x = Math.sin(tick*-0.1)* 2.2
-    	meshes.chair2.position.y = Math.cos(tick*-0.1)* 2.2 //Math.cos(tick * velocity)* radius
+		meshes.watch.rotation.y += 0.005
+		meshes.watch.rotation.z += 0.005
+		meshes.watch.position.x = Math.sin(tick*-0.1)* 2.2 -1
+    	meshes.watch.position.y = Math.cos(tick*-0.1)* 2.2 -1
+		meshes.photo.position.z = Math.sin(tick*0.1)* 1.5//Math.cos(tick * velocity)* radius
 	}
 
 	if(meshes.star){
@@ -580,26 +888,25 @@ function animate() {
 		const tick = clock.getElapsedTime()
 		meshes.photo.rotation.y += 0.005
 		meshes.photo.rotation.z += 0.005
-		meshes.photo.position.x = Math.sin(tick*-0.1)* 1.5
-    	meshes.photo.position.z = Math.sin(tick*-0.1)* 1.5
-		meshes.photo.position.y = Math.sin(tick* 0.1)* 1.5 //Math.cos(tick * velocity)* radius
+		meshes.photo.position.x = Math.sin(tick* -0.2)* 1
+		meshes.photo.position.y = Math.sin(tick* 0.1)* 1 //Math.cos(tick * velocity)* radius
 	}
 
 	if(meshes.guitar){
 		const tick = clock.getElapsedTime()
 		meshes.guitar.rotation.y += 0.005
 		meshes.guitar.rotation.z += 0.005
-		meshes.guitar.position.x = Math.sin(tick* 0.1)* 2
+		meshes.guitar.position.x = Math.sin(tick* -0.1)* 2
 		meshes.guitar.position.z = Math.sin(tick* -0.15)* 2  
-    	meshes.guitar.position.y = Math.sin(tick* -0.15)* 2  //Math.cos(tick * velocity)* radius
+    	meshes.guitar.position.y = Math.sin(tick* -0.15)* 1  //Math.cos(tick * velocity)* radius
 	}
 
-	if(meshes.horse){
+	if(meshes.flower){
 		const tick = clock.getElapsedTime()
-		meshes.horse.rotation.y += 0.005
-		meshes.horse.rotation.z += 0.005
-		meshes.horse.position.x = Math.cos(tick* 0.1)* 1.5
-    	meshes.horse.position.y = Math.cos(tick* 0.1)* 2  //Math.cos(tick * velocity)* radius
+		meshes.flower.rotation.y += 0.005
+		meshes.flower.rotation.z += 0.005
+		meshes.flower.position.x = Math.cos(tick* 0.1)* 1.5
+    	meshes.flower.position.y = Math.cos(tick* 0.1)* 2  //Math.cos(tick * velocity)* radius
 	}
 	
 	if(meshes.bag){
