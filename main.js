@@ -698,7 +698,7 @@ function instances() {
 	guitar.init()
 
 	const flower = new Model({
-		url: './flower.glb',
+		url: './flower3.glb',
 		scene: scene,
 		meshes: meshes,
 		name: 'flower',
